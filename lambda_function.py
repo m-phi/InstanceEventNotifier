@@ -1,7 +1,7 @@
 import json
 import boto3
 
-#HELLO FROM GITHUB
+#HELLO FROM GITHUB 2
 # SES configuration
 SES_REGION = 'us-east-1'  # Change to your SES region
 SENDER_EMAIL = 'aaggarwal@siterx.com'
