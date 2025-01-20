@@ -1,7 +1,6 @@
 import json
 import boto3
 
-#HELLO FROM GITHUB 2
 # SES configuration
 SES_REGION = 'us-east-1'  # Change to your SES region
 SENDER_EMAIL = 'aaggarwal@siterx.com'
@@ -13,25 +12,26 @@ def lambda_handler(event, context):
     detail = event['detail']
     instance_id = detail['instance-id']
     state = detail['state']
+    user = detail['user']  # Assuming the user information is available in the event
     
     if state == 'stopped':
         # Send an email notification
-        send_email(instance_id)
+        send_email(instance_id, user)
     
     return {
         'statusCode': 200,
         'body': json.dumps('Success')
     }
 
-def send_email(instance_id):
+def send_email(instance_id, user):
     client = boto3.client('ses', region_name=SES_REGION)
     
-    body_text = f"The EC2 instance with ID {instance_id} has been stopped."
+    body_text = f"The EC2 instance with ID {instance_id} has been stopped by {user}."
     body_html = f"""<html>
     <head></head>
     <body>
       <h1>EC2 Instance Stopped</h1>
-      <p>The EC2 instance with ID <b>{instance_id}</b> has been stopped.</p>
+      <p>The EC2 instance with ID <b>{instance_id}</b> has been stopped by <b>{user}</b>.</p>
     </body>
     </html>"""
     
