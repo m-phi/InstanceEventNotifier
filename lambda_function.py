@@ -12,26 +12,27 @@ def lambda_handler(event, context):
     detail = event['detail']
     instance_id = detail['instance-id']
     state = detail['state']
-    user = detail['user']  # Assuming the user information is available in the event
+    user_identity = event['userIdentity']['arn']  # Extract user identity
+
     
     if state == 'stopped':
         # Send an email notification
-        send_email(instance_id, user)
+        send_email(instance_id, user_identity)
     
     return {
         'statusCode': 200,
         'body': json.dumps('Success')
     }
 
-def send_email(instance_id, user):
+def send_email(instance_id, user_identity):
     client = boto3.client('ses', region_name=SES_REGION)
     
-    body_text = f"The EC2 instance with ID {instance_id} has been stopped by {user}."
+    body_text = f"The EC2 instance with ID {instance_id} has been stopped by {user_identity}."
     body_html = f"""<html>
     <head></head>
     <body>
       <h1>EC2 Instance Stopped</h1>
-      <p>The EC2 instance with ID <b>{instance_id}</b> has been stopped by <b>{user}</b>.</p>
+      <p>The EC2 instance with ID <b>{instance_id}</b> has been stopped by {user_identity}.</p>
     </body>
     </html>"""
     
