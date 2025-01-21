@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     # Extract user identity ARN and email
     user_principalId = event.get('userIdentity', {}).get('principalId', 'Unknown user')
     # user_identity_arn = event.get('userIdentity', {}).get('arn', 'Unknown user')
-    user_email = user_principalId.split(':')[-1] if user_principalId != 'Unknown user' else 'Unknown user'
+    user_email = user_principalId.split(':')[1] if user_principalId != 'Unknown user' else 'Unknown user'
         
     if state == 'stopped':
         # Send an email notification
