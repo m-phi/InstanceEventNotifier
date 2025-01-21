@@ -89,5 +89,3 @@ def send_email(instance_id, state, user_email, environment):
     
     if response['ResponseMetadata']['HTTPStatusCode'] != 200:
         raise Exception(f"Failed to send email: {response}")
-
-# Ensure you have the necessary IAM roles and permissions for the Lambda function to access SES and CloudWatch.
