@@ -17,7 +17,7 @@ def lambda_handler(event, context):
 
     # Extract instance details from the event
     detail = event.get['detail', {}]
-    instance_id = detail['instance-id', 'Unknown instance')]
+    instance_id = detail['instance-id', 'Unknown instance']
     state = detail['state', 'Unknown state']
 
     # Extract user identity ARN and email
