@@ -23,7 +23,7 @@ def lambda_handler(event, context):
     # Extract user identity ARN and email
     # user_principalId = event.get('userIdentity', {}).get('principalId', 'Unknown user')
     user_identity_arn = event.get('userIdentity', {}).get('arn', 'Unknown user')
-    user_email = user_identity_arn.split(':')[-1] if user_identity_arn != 'Unknown user' else 'Unknown user'
+    user_email = user_identity_arn.split('/')[-1] if user_identity_arn != 'Unknown user' else 'Unknown user'
 
     logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s", instance_id, state, user_identity_arn, user_email)
 
