@@ -14,7 +14,7 @@ SUBJECT = 'EC2 Instance State Change'
 
 # Account to environment mapping
 ACCOUNT_ENV_MAPPING = {
-    '471536230503': 'ITOP Sandbox',
+    '471536230503': 'ITOPS Sandbox',
     '381492225276': 'Security'
 }
 
