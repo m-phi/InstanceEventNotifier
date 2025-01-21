@@ -41,7 +41,7 @@ def lambda_handler(event, context):
     logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s", 
                 instance_id, state, user_identity_arn, user_email, account_id, environment)
 
-    if state in ['terminated', 'stopped', 'rebooting']:
+    if state in ["stopped", "terminated", "running", "rebooting"]:
         # Send an email notification
         send_email(instance_id, state, user_email, environment)
     
