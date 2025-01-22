@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     user_identity_arn = detail.get('userIdentity', {}).get('arn')
     user_email = detail.get('userIdentity', {}).get('userName') + '@siterx.com'  # Adjust as needed
     account_id = event.get('account')
-    environment = 'your-environment'  # Adjust as needed
+    environment = 'ITOPS Sandbox'  # Adjust as needed
     event_name = detail.get('eventName')
 
     logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s, Event Name: %s",
