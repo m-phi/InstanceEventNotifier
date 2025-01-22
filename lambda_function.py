@@ -2,26 +2,46 @@ import json
 import boto3
 import logging
 
+# Configure logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-SES_REGION = 'us-east-1'
+# SES configuration
+SES_REGION = 'us-east-1'  # Change to your SES region
 SENDER_EMAIL = 'aaggarwal@siterx.com'
+RECIPIENT_EMAIL = 'aaggarwal@siterx.com'
+SUBJECT = 'EC2 Instance State Change'
+
+# Account to environment mapping
+ACCOUNT_ENV_MAPPING = {
+    '471536230503': 'ITOPS Sandbox',
+    '381492225276': 'Security'
+}
 
 def lambda_handler(event, context):
+    logger.info("Received event: %s", json.dumps(event))
+
+    # Extract instance details from the event
     detail = event.get('detail', {})
-    instance_id = detail.get('instance-id')
-    state = detail.get('state')
-    user_identity_arn = detail.get('userIdentity', {}).get('arn')
-    user_email = detail.get('userIdentity', {}).get('userName') + '@siterx.com'  # Adjust as needed
-    account_id = event.get('account')
-    environment = 'ITOPS Sandbox'  # Adjust as needed
-    event_name = detail.get('eventName')
+    instance_id = detail.get('instance-id', 'Unknown instance')
+    state = detail.get('state', 'Unknown state')
 
-    logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s, Event Name: %s",
-            instance_id, state, user_identity_arn, user_email, account_id, environment, event_name)
+    # Extract user identity ARN and email
+    user_identity_arn = event.get('userIdentity', {}).get('arn', 'Unknown user')
+    user_email = user_identity_arn.split('/')[-1] if user_identity_arn != 'Unknown user' else 'Unknown user'
 
-    if state in ["stopped", "terminated", "running", "rebooting"] or event_name == "RebootInstances":
+    # Extract account number and determine environment
+    account_id = event.get('account', 'Unknown account')
+    environment = ACCOUNT_ENV_MAPPING.get(account_id, 'Unknown environment')
+
+    # Extract account number and determine environment
+    account_id = event.get('account', 'Unknown account')
+    environment = ACCOUNT_ENV_MAPPING.get(account_id, 'Unknown environment')
+
+    logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s",
+                instance_id, state, user_identity_arn, user_email, account_id, environment)
+
+    if state in ["stopped", "terminated", "running", "rebooting"]:
         # Send an email notification
         send_email(instance_id, state, user_email, environment)
     
@@ -46,12 +66,12 @@ def send_email(instance_id, state, user_email, environment):
         Source=SENDER_EMAIL,
         Destination={
             'ToAddresses': [
-                user_email,
-            ]
+                RECIPIENT_EMAIL,
+            ],
         },
         Message={
             'Subject': {
-                'Data': f"EC2 Instance State Change Notification for {environment}",
+                'Data': SUBJECT,
                 'Charset': 'UTF-8'
             },
             'Body': {
@@ -66,4 +86,6 @@ def send_email(instance_id, state, user_email, environment):
             }
         }
     )
-    return response
+
+    if response['ResponseMetadata']['HTTPStatusCode'] != 200:
+        raise Exception(f"Failed to send email: {response}")
