@@ -25,6 +25,7 @@ def lambda_handler(event, context):
     detail = event.get('detail', {})
     instance_id = detail.get('instance-id', 'Unknown instance')
     state = detail.get('state', 'Unknown state')
+    event_name = detail.get('eventName', 'Unknown event')
 
     # Extract user identity ARN and email
     user_identity_arn = event.get('userIdentity', {}).get('arn', 'Unknown user')
@@ -34,21 +35,24 @@ def lambda_handler(event, context):
     account_id = event.get('account', 'Unknown account')
     environment = ACCOUNT_ENV_MAPPING.get(account_id, 'Unknown environment')
 
-    logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s",
-                instance_id, state, user_identity_arn, user_email, account_id, environment)
+    logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s, Event Name: %s",
+                instance_id, state, user_identity_arn, user_email, account_id, environment, event_name)
 
-    if state in ["stopped", "terminated", "running", "rebooting"]:
+    if state in ["stopped", "terminated", "running", "rebooting"] or event_name == "RebootInstances":
         # Send an email notification
-        send_email(instance_id, state, user_email, environment)
+        send_email(instance_id, state, user_email, environment, event_name)
     
     return {
         'statusCode': 200,
         'body': json.dumps('Success')
     }
 
-def send_email(instance_id, state, user_email, environment):
+def send_email(instance_id, state, user_email, environment, event_name):
     client = boto3.client('ses', region_name=SES_REGION)
     
+    if event_name == "RebootInstances":
+        state = "rebooting"
+
     body_text = f"The EC2 instance with ID {instance_id} has been {state} by {user_email}."
     body_html = f"""<html>
     <head></head>
