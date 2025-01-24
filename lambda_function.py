@@ -15,7 +15,8 @@ SUBJECT = 'EC2 Instance State Change'
 # Account to environment mapping
 ACCOUNT_ENV_MAPPING = {
     '471536230503': 'ITOPS Sandbox',
-    '381492225276': 'Security'
+    '381492225276': 'Security',
+    '983026944957': 'Dev/QA'
 }
 
 def lambda_handler(event, context):
