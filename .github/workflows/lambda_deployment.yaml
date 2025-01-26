@@ -35,6 +35,6 @@ jobs:
         with:
           args: lambda update-function-code --function-name arn:aws:lambda:us-east-1:983026944957:function:ec2_status_notification --zip-file fileb://code.zip
         env:
-          AWS_ACCESS_KEY_ID_{0}: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', github.event.inputs.environment)] }}
-          AWS_SECRET_ACCESS_KEY_{0}: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', github.event.inputs.environment)] }}
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID_DEV_QA: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', github.event.inputs.environment)] }}
+          AWS_SECRET_ACCESS_KEY_DEV_QA: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', github.event.inputs.environment)] }}
+          AWS_DEFAULT_REGION_DEV_QA: us-east-1
