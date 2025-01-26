@@ -12,7 +12,7 @@ on:
         default: dev-qa  # Set the default environment here
         type: choice
         options:
-          - dev-qa
+          - dev_qa
           - staging
           - production
 
