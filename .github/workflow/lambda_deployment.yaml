@@ -3,16 +3,19 @@ name: Deploy Lambda Function
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: Select the environment to deploy to
+      log_level:
+        description: Log level
         required: true
-        default: main  # Set the default environment here
+        default: INFO
         type: choice
         options:
           - dev-qa
           - staging
           - production
-
+      environment:
+        description: Environment to run tests against
+        type: environment
+        required: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
