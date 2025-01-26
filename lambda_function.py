@@ -1,7 +1,7 @@
 import json
 import boto3
 import logging
-#new
+
 # Configure logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -14,9 +14,8 @@ SUBJECT = 'EC2 Instance State Change'
 
 # Account to environment mapping
 ACCOUNT_ENV_MAPPING = {
-    # '471536230503': 'ITOPS Sandbox',
-    '381492225276': 'Security',
-    '983026944957': 'Dev/QA'
+    '983026944957': 'Dev/QA',
+    '381492225276': 'Security'
 }
 
 def lambda_handler(event, context):
