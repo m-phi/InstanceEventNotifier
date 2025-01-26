@@ -9,10 +9,10 @@ on:
       environment:
         description: Select the environment to deploy to
         required: true
-        default: dev_qa  # Set the default environment here
+        default: DEV_QA  # Set the default environment here
         type: choice
         options:
-          - dev_qa
+          - DEV_QA
           - staging
           - production
 
@@ -34,7 +34,7 @@ jobs:
         uses: imehedi/actions-awscli-v2@latest
         with:
           args: lambda update-function-code \
-            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --function-name ${{ var.['LAMBDA_FUNCTION_NAME_' + github.event.inputs.environment] }} \
             --zip-file fileb://code.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_' + github.event.inputs.environment] }}
