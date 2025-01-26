@@ -33,7 +33,7 @@ jobs:
         uses: imehedi/actions-awscli-v2@latest
         with:
           args: lambda update-function-code \
-            --function-name arn:aws:lambda:${{ secrets['AWS_DEFAULT_REGION_DEV_QA'] }}:${{ secrets['AWS_ACCOUNT_ID_DEV_QA'] }}:function:${{ secrets['LAMBDA_FUNCTION_NAME_DEV_QA }} \
+            --function-name arn:aws:lambda:${{ secrets['AWS_DEFAULT_REGION_DEV_QA'] }}:${{ secrets['AWS_ACCOUNT_ID_DEV_QA'] }}:function:${{ secrets['LAMBDA_FUNCTION_NAME_DEV_QA' }} \
             --zip-file fileb://code.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_DEV_QA'] }}
