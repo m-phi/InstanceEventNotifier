@@ -3,9 +3,17 @@ name: Deploy Lambda Function
 on:
   push:
     branches:
-      - dev-qa
       - main
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Select the environment to deploy to
+        required: true
+        default: dev-qa
+        type: choice
+        options:
+          - dev-qa
+          - production
 jobs:
   deploy:
     runs-on: ubuntu-latest
