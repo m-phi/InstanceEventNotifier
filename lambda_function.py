@@ -9,7 +9,7 @@ logger.setLevel(logging.INFO)
 # SES configuration
 SES_REGION = 'us-east-1'  # Change to your SES region
 SENDER_EMAIL = 'aaggarwal@siterx.com'
-RECIPIENT_EMAIL = 'aaggarwal@siterx.com, claude@siterx.com'
+RECIPIENT_EMAIL = ['aaggarwal@siterx.com', 'claude@siterx.com']
 SUBJECT = 'EC2 Instance State Change'
 
 # Account to environment mapping
