@@ -34,9 +34,9 @@ jobs:
         uses: imehedi/actions-awscli-v2@latest
         with:
           args: lambda update-function-code \
-            --function-name ${{ var.['LAMBDA_FUNCTION_NAME_' + github.event.inputs.environment] }} \
+            --function-name ${{ arn:aws:lambda:$(var.AWS_DEFAULT_REGION):$(var.AWS_ACCOUNT_ID):function:lambda_function_name }} \
             --zip-file fileb://code.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_' + github.event.inputs.environment] }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets['AWS_SECRET_ACCESS_KEY_' + github.event.inputs.environment] }}
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_REGION: ${{ var.AWS_DEFAULT_REGION }}
