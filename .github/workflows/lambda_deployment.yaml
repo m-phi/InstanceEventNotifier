@@ -1,5 +1,5 @@
 name: Deploy Lambda Function
-##
+
 on:
   push:
     branches:
@@ -15,7 +15,6 @@ on:
           - dev-qa
           - staging
           - production
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -37,6 +36,6 @@ jobs:
             --function-name arn:aws:lambda:${{ secrets['AWS_DEFAULT_REGION_' + github.event.inputs.environment] }}:${{ secrets['AWS_ACCOUNT_ID_' + github.event.inputs.environment] }}:function:${{ secrets['LAMBDA_FUNCTION_NAME_' + github.event.inputs.environment] }} \
             --zip-file fileb://code.zip
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_' + github.event.inputs.environment] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets['AWS_SECRET_ACCESS_KEY_' + github.event.inputs.environment] }}
-          AWS_DEFAULT_REGION: ${{ secrets['AWS_DEFAULT_REGION_' + github.event.inputs.environment] }}
+          AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_DEV_QA'] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets['AWS_SECRET_ACCESS_KEY_DEV_QA'] }}
+          AWS_DEFAULT_REGION: ${{ secrets['AWS_DEFAULT_REGION_DEV_QA'] }}
