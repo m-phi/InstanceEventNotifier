@@ -33,10 +33,15 @@ def lambda_handler(event, context):
 
     # Extract account number and determine environment
     account_id = event.get('account', 'Unknown account')
+    print("##########")
+    print(account_id)
     environment = ACCOUNT_ENV_MAPPING.get(account_id, 'Unknown environment')
+    print("##########")
+    print(environment)
 
     # Get instance name
     instance_name = get_instance_name(instance_id)
+    print(instance_name)
 
     logger.info("Instance ID: %s, State: %s, User ARN: %s, User Email: %s, Account ID: %s, Environment: %s, Event Name: %s, Instance Name: %s",
                 instance_id, state, user_identity_arn, user_email, account_id, environment, event_name, instance_name)
