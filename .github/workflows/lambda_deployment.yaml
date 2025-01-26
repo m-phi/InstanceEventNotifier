@@ -1,0 +1,42 @@
+name: Deploy Lambda Function
+##
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Select the environment to deploy to
+        required: true
+        default: dev-qa  # Set the default environment here
+        type: choice
+        options:
+          - dev-qa
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install zip tool
+        run: sudo apt-get install -y zip
+
+      - name: Create Zip file for Lambda function
+        run: zip -r code.zip .
+
+      - name: AWS CLI v2
+        uses: imehedi/actions-awscli-v2@latest
+        with:
+          args: lambda update-function-code \
+            --function-name arn:aws:lambda:${{ secrets['AWS_DEFAULT_REGION_' + github.event.inputs.environment] }}:${{ secrets['AWS_ACCOUNT_ID_' + github.event.inputs.environment] }}:function:${{ secrets['LAMBDA_FUNCTION_NAME_' + github.event.inputs.environment] }} \
+            --zip-file fileb://code.zip
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets['AWS_ACCESS_KEY_ID_' + github.event.inputs.environment] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets['AWS_SECRET_ACCESS_KEY_' + github.event.inputs.environment] }}
+          AWS_DEFAULT_REGION: ${{ secrets['AWS_DEFAULT_REGION_' + github.event.inputs.environment] }}
