@@ -9,7 +9,7 @@ logger.setLevel(logging.INFO)
 # SES configuration
 SES_REGION = 'us-east-1'  # Change to your SES region
 SENDER_EMAIL = 'aaggarwal@siterx.com'
-RECIPIENT_EMAIL = ['aaggarwal@siterx.com', 'claude@siterx.com']
+RECIPIENT_EMAILS = ['aaggarwal@siterx.com', 'claude@siterx.com']
 SUBJECT = 'EC2 Instance State Change'
 
 # Account to environment mapping
@@ -81,9 +81,7 @@ def send_email(instance_id, state, user_email, environment, event_name, instance
     response = client.send_email(
         Source=SENDER_EMAIL,
         Destination={
-            'ToAddresses': [
-                RECIPIENT_EMAIL,
-            ],
+            'ToAddresses': RECIPIENT_EMAILS,
         },
         Message={
             'Subject': {
