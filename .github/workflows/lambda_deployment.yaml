@@ -9,15 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Install zip tool
-        run: sudo apt-get install -y zip
-
+        uses: montudor/action-zip@v1
       - name: Create Zip file for Lambda function
         run: zip -r code.zip .
-
       - name: AWS CLI v2
         uses: imehedi/actions-awscli-v2@latest
         with:
